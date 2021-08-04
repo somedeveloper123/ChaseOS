@@ -28,7 +28,7 @@ namespace fixbuild
             Console.WriteLine("loading UI");
 
 
-            cddefault = @"0:/";
+            cddefault = @"0:\";
 
             
             
@@ -50,15 +50,18 @@ namespace fixbuild
                     Kernel.gui.MouseHandler();
                     return;
                 }
-                Console.Write(cddefault + " ChaseOS>");
+                Console.Write("Time: "+ DateTime.Now +" Path: "+ cddefault + " ChaseOS>");
                 string cmd = Console.ReadLine();
-                if (cddefault.EndsWith("/"))
+                if (cddefault.EndsWith(@"\"))
                 {
 
                 }
-                else
+                else if (cddefault.EndsWith(@"/"))
                 {
-                    cddefault = cddefault + "/";
+                    
+                } else
+                {
+                    cddefault = cddefault + @"\";
                 }
                 if (cmd == "graphics")
                 {
@@ -69,7 +72,10 @@ namespace fixbuild
                         Kernel.gui = new Graphics();
                     }
                 }
-
+                if (cmd == "clear")
+                {
+                    Console.Clear();
+                }
                 if (cmd == "shutdown")
                 {
                     Sys.Power.Shutdown();
@@ -284,7 +290,7 @@ namespace fixbuild
             {
                 Console.WriteLine("oh no your code just got downed");
                 Console.WriteLine("how to revive: fix " + e.ToString());
-                BeforeRun();
+
             }
 
         }
