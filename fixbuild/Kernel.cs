@@ -28,7 +28,7 @@ namespace fixbuild
             Console.WriteLine("loading UI");
 
 
-            cddefault = @"0:\";
+            cddefault = @"0:/";
 
             
             
@@ -52,16 +52,13 @@ namespace fixbuild
                 }
                 Console.Write("Time: "+ DateTime.Now +" Path: "+ cddefault + " ChaseOS>");
                 string cmd = Console.ReadLine();
-                if (cddefault.EndsWith(@"\"))
+                if (cddefault.EndsWith(@"/"))
                 {
 
                 }
-                else if (cddefault.EndsWith(@"/"))
+                else
                 {
-                    
-                } else
-                {
-                    cddefault = cddefault + @"\";
+                    cddefault = cddefault + "/";
                 }
                 if (cmd == "graphics")
                 {
@@ -94,7 +91,7 @@ namespace fixbuild
                 }
                 if (cmd == "version")
                 {
-                    Console.WriteLine("Version: 6.0.0, ChaseOS is an Operating system which is a small project, there is no gui design.");
+                    Console.WriteLine("Version: 11.0.1, ChaseOS is an Operating system which is a small project, there is no gui design.");
                     Console.WriteLine("Credits to Reese or chickendad#3076 for being a developer. Owner: Chase or dff#1307");
                 }
                 if (cmd == "createdirectory")
@@ -122,22 +119,16 @@ namespace fixbuild
                     Console.WriteLine(DateTime.Now.ToString());
 
                 }
-                //Do modifications here
-                // if statement syntax: if (a statement) {cool code}
                 if (cmd == "settings")
                 {
-                    // ASK THEM FOR STUPID COLOR
                     Console.WriteLine("What color for text color?");
-                    //WAIT FOR ANSWER
                     string color = Console.ReadLine();
-                    //new if statement color.ToLower(0) = color lowercase
                     if (color.ToLower() == "blue")
                     {
-                        // change color
+ 
                         Console.ForegroundColor = ConsoleColor.Blue;
                     }
-                    // DO IT FOR ALL THE COLORS OK
-                    // yes mam
+
 
                     if (color.ToLower() == "red")
                     {
