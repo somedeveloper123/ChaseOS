@@ -24,7 +24,7 @@ namespace fixbuild
             Sys.FileSystem.VFS.VFSManager.RegisterVFS(FileManager);
 
             Console.WriteLine("filesys created");
-            Console.WriteLine("internet loading");
+
             Console.WriteLine("loading UI");
 
 
