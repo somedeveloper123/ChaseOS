@@ -9,6 +9,7 @@ using Cosmos.System.Graphics;
 using Cosmos.System.Network;
 using fixbuild.ChaseGraphicsAPI;
 
+
 namespace fixbuild
 {
 
@@ -26,8 +27,7 @@ namespace fixbuild
             Console.WriteLine("filesys created");
             Console.WriteLine("internet loading");
             Console.WriteLine("loading UI");
-
-
+            Console.WriteLine("Checking for updates");
             cddefault = @"0:/";
 
             
@@ -38,19 +38,13 @@ namespace fixbuild
         {
 
             try
-            {
-
-
-
-
-
-
+            { 
                 if (Kernel.gui != null)
                 {
                     Kernel.gui.MouseHandler();
                     return;
                 }
-                Console.Write(cddefault + " ChaseOS>");
+                Console.Write(cddefault + " "+DateTime.Now.ToString()+" ChaseOS>");
                 string cmd = Console.ReadLine();
                 if (cddefault.EndsWith("/"))
                 {
@@ -83,7 +77,7 @@ namespace fixbuild
                 }
                 if (cmd == "version")
                 {
-                    Console.WriteLine("Version: 6.0.0, ChaseOS is an Operating system which is a small project, there is no gui design.");
+                    Console.WriteLine("Version: 10.0.0, ChaseOS is an Operating system which is a small project, there is no gui design.");
                     Console.WriteLine("Credits to Reese or chickendad#3076 for being a developer. Owner: Chase or dff#1307");
                 }
                 if (cmd == "createdirectory")
@@ -279,7 +273,6 @@ namespace fixbuild
             {
                 Console.WriteLine("oh no your code just got downed");
                 Console.WriteLine("how to revive: fix " + e.ToString());
-                BeforeRun();
             }
 
         }
