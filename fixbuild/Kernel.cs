@@ -62,7 +62,12 @@ namespace fixbuild
                 }
                 if (cmd == "graphics")
                 {
-                    Kernel.gui = new Graphics();
+                    Console.WriteLine("ALERT! Graphics mode is in beta, and may not work. Continue? Y/N");
+                    string confirm = Console.ReadLine();
+                    if (confirm == "Y")
+                    {
+                        Kernel.gui = new Graphics();
+                    }
                 }
 
                 if (cmd == "shutdown")
