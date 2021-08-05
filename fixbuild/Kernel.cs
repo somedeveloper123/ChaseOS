@@ -67,6 +67,7 @@ namespace fixbuild
                     if (confirm == "Y")
                     {
                         Kernel.gui = new Graphics();
+
                     }
                 }
                 if (cmd == "clear")
