@@ -19,19 +19,20 @@ namespace fixbuild
         CosmosVFS FileManager = new Sys.FileSystem.CosmosVFS();
         protected override void BeforeRun()
         {
-            Console.WriteLine("Welcome to ChaseOS, the calculator that can store files!");
+            Console.WriteLine("Welcome to ChaseOS!");
             Console.WriteLine("preparing file system");
             Sys.FileSystem.VFS.VFSManager.RegisterVFS(FileManager);
 
-            Console.WriteLine("filesys created");
 
+            Console.WriteLine("filesystem ready");
+            Console.WriteLine("internet loading");
             Console.WriteLine("loading UI");
 
 
             cddefault = @"0:/";
 
-            
-            
+
+
         }
 
         protected override void Run()
@@ -50,9 +51,9 @@ namespace fixbuild
                     Kernel.gui.MouseHandler();
                     return;
                 }
-                Console.Write("Time: "+ DateTime.Now +" Path: "+ cddefault + " ChaseOS>");
+                Console.Write(cddefault + " ChaseOS>");
                 string cmd = Console.ReadLine();
-                if (cddefault.EndsWith(@"/"))
+                if (cddefault.EndsWith("/"))
                 {
 
                 }
@@ -62,18 +63,18 @@ namespace fixbuild
                 }
                 if (cmd == "graphics")
                 {
-                    Console.WriteLine("ALERT! Graphics mode is in beta, and may not work. Continue? Y/N");
+                    Console.WriteLine("The graphics system is still in beta, are you sure (y, n)");
                     string confirm = Console.ReadLine();
-                    if (confirm == "Y")
+                    if (confirm == "y")
                     {
                         Kernel.gui = new Graphics();
+                    }
+                    else
+                    {
 
                     }
                 }
-                if (cmd == "clear")
-                {
-                    Console.Clear();
-                }
+
                 if (cmd == "shutdown")
                 {
                     Sys.Power.Shutdown();
@@ -84,7 +85,7 @@ namespace fixbuild
                 }
                 if (cmd == "help")
                 {
-                    Console.WriteLine("cmds: version, calc, readfile, ls, createfile, editfile, deletefile, help, createdirectory, removedirectory, cd, cdfullpath, time, settings, pwd");
+                    Console.WriteLine("cmds: version, calc, readfile, ls, newfile, editfile, delfile, help, newdir, deldir, cd, cdfullpath, time, settings, pwd, graphics (beta), clear, copyfile");
                 }
                 if (cmd == "pwd")
                 {
@@ -92,15 +93,15 @@ namespace fixbuild
                 }
                 if (cmd == "version")
                 {
-                    Console.WriteLine("Version: 11.0.1, ChaseOS is an Operating system which is a small project, there is no gui design.");
+                    Console.WriteLine("Version: 12.0.0, ChaseOS is a small project to make an Operating system, there is a gui but it is in beta and does not currently work.");
                     Console.WriteLine("Credits to Reese or chickendad#3076 for being a developer. Owner: Chase or dff#1307");
                 }
-                if (cmd == "createdirectory")
+                if (cmd == "newdir")
                 {
                     Console.WriteLine("directory name?");
                     string prefolder = Console.ReadLine();
                     FileManager.CreateDirectory(@cddefault + prefolder);
-                    Console.WriteLine("Directory created.");
+                    Console.WriteLine("Directory created");
                 }
                 if (cmd == "cd")
                 {
@@ -120,16 +121,22 @@ namespace fixbuild
                     Console.WriteLine(DateTime.Now.ToString());
 
                 }
+                //Do modifications here
+                // if statement syntax: if (a statement) {cool code}
                 if (cmd == "settings")
                 {
+                    // ASK THEM FOR STUPID COLOR
                     Console.WriteLine("What color for text color?");
+                    //WAIT FOR ANSWER
                     string color = Console.ReadLine();
+                    //new if statement color.ToLower(0) = color lowercase
                     if (color.ToLower() == "blue")
                     {
- 
+                        // change color
                         Console.ForegroundColor = ConsoleColor.Blue;
                     }
-
+                    // DO IT FOR ALL THE COLORS OK
+                    // yes mam
 
                     if (color.ToLower() == "red")
                     {
@@ -145,7 +152,17 @@ namespace fixbuild
                     }
                     if (color.ToLower() == "black")
                     {
-                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.WriteLine("Warning: Setting the text color to black will make it imposible to see the text, are you sure (y, n)");
+                        string confirm = Console.ReadLine();
+                        if (confirm == "y")
+                        {
+                            Console.ForegroundColor = ConsoleColor.Black;
+                        }
+                        if (confirm == "n")
+                        {
+                            Console.WriteLine("Color change canceled");
+                            Console.ForegroundColor = ConsoleColor.White;
+                        }
                     }
                     if (color.ToLower() == "white")
                     {
@@ -224,23 +241,38 @@ namespace fixbuild
                     Console.Write("Press any key to close the Calculator console app...");
                     Console.ReadKey();
                 }
-                if (cmd == "removedirectory")
+                if (cmd == "copyfile")
+                {
+                    Console.WriteLine("Directory of file to be copied?");
+                    string copy = Console.ReadLine();
+                    var file = Sys.FileSystem.VFS.VFSManager.GetFile(@cddefault + copy);
+                    var filestream = file.GetFileStream();
+                    byte[] data = Encoding.ASCII.GetBytes(copy);
+                    filestream.Read(data, 0, (int)copy.Length);
+                    Console.WriteLine("filename of copied file?");
+                    string filename1 = Console.ReadLine();
+                    var filec = Sys.FileSystem.VFS.VFSManager.GetFile(@cddefault + filename1);
+                    byte[] datac = Encoding.ASCII.GetBytes(copy);
+                    filestream.Write(data, 0, (int)copy.Length);
+                    Console.WriteLine("file copied sucessfully");
+                }
+                if (cmd == "deldir")
                 {
                     Console.WriteLine("Directory?");
                     string predir = Console.ReadLine();
 
                     FileManager.DeleteDirectory(FileManager.GetDirectory(@cddefault + predir));
                 }
-                if (cmd == "createfile")
+                if (cmd == "newfile")
                 {
-                    Console.WriteLine("filename");
+                    Console.WriteLine("filename?");
                     string filename = Console.ReadLine();
                     Sys.FileSystem.VFS.VFSManager.CreateFile(@cddefault + filename);
 
                 }
                 if (cmd == "editfile")
                 {
-                    Console.WriteLine("filename");
+                    Console.WriteLine("filename?");
                     string filename1 = Console.ReadLine();
                     var file = Sys.FileSystem.VFS.VFSManager.GetFile(@cddefault + filename1);
                     var filestream = file.GetFileStream();
@@ -250,17 +282,13 @@ namespace fixbuild
                     filestream.Write(data, 0, (int)contents.Length);
                     Console.WriteLine("file edited sucessfully");
                 }
-                if (cmd == "deletefile")
+                if (cmd == "delfile")
                 {
                     Console.WriteLine("Enter the name of the file");
                     string prefilename2 = Console.ReadLine();
                     var preprefilename2 = Sys.FileSystem.VFS.VFSManager.GetFile(@cddefault + prefilename2);
 
                     FileManager.DeleteFile(preprefilename2);
-                }
-                if (cmd == "box")
-                {
-                    fixbuild.ChaseGraphicsAPI.Graphics.THE = true;
                 }
                 if (cmd == "ls")
                 {
@@ -273,22 +301,26 @@ namespace fixbuild
                 }
                 if (cmd == "readfile")
                 {
-                    Console.WriteLine("filename");
+                    Console.WriteLine("filename?");
                     var prefile = Console.ReadLine();
                     var file = Sys.FileSystem.VFS.VFSManager.GetFile(@cddefault + prefile).GetFileStream();
                     byte[] data = new byte[file.Length];
                     file.Read(data, 0, (int)file.Length);
                     Console.WriteLine(Encoding.Default.GetString(data));
                 }
+                if (cmd == "clear")
+                {
+                    Console.Clear();
+                }
 
             }
             catch (Exception e)
             {
-                Console.WriteLine("oh no your code just got downed");
-                Console.WriteLine("how to revive: fix " + e.ToString());
-
+                Console.WriteLine("oh no, an error occurred");
+                Console.WriteLine("how to fix the error: fix " + e.ToString());
             }
 
         }
-    } 
+    }
 }
+
