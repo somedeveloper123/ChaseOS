@@ -1,35 +1,31 @@
-﻿using System;
+﻿// system libraries
+using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Drawing;
 using Sys = Cosmos.System;
-using Cosmos.System.Graphics;
-using Cosmos.System;
-using fixbuild.ChaseGraphicsAPI.GUI;
-namespace fixbuild.ChaseGraphicsAPI
-{
 
-    class Graphics
+// os libraries
+using PurpleMoon.Core;
+using PurpleMoon.Hardware;
+using PurpleMoon.Math;
+using PurpleMoon.Types;
+
+namespace PurpleMoon.GUI
+{
+    public class MenuMain : Control
     {
-        public static bool THE;
-        private Canvas canvas;
-        private Pen pen;
-        private MouseState mouseState;
-        private UInt32 px, py;
-        private List<Tuple<Sys.Graphics.Point, Color>> savedPixels;
         public List<Button> items = new List<Button>();
         public Button btnApps, btnFiles, btnSettings, btnTerminal, btnLogoff, btnRestart, btnOff, btnCLI, btnAbout;
-        public Graphics()
+
+        public MenuMain() : base(0, 22, 160, 196, "mainmenu")
         {
-            canvas = FullScreenCanvas.GetFullScreenCanvas();
-            canvas.Clear(Color.Black);
-            pen = new Pen(Color.White);
-            mouseState = MouseState.None;
-            px = 3;
-            py = 3;
-            savedPixels = new List<Tuple<Sys.Graphics.Point, Color>>();
-            MouseManager.ScreenHeight = (UInt32)canvas.Mode.Rows;
-            MouseManager.ScreenWidth = (UInt32)canvas.Mode.Columns;
+            this.visible = false;
+            AddButtons();
+        }
+
+        private void AddButtons()
+        {
+            // applications button
             btnApps = new Button(x + 6, y + 6, "Applications       >");
             btnApps.width = width - 12; btnApps.height = 24;
             btnApps.style.SIZE_BORDER = 0;
@@ -91,42 +87,56 @@ namespace fixbuild.ChaseGraphicsAPI
             btnOff.style.SIZE_BORDER = 0;
             btnOff.textAlign = TextAlign.left;
             items.Add(btnOff);
-            pen.Color = Color.White;
-            /* A PaleVioletRed rectangle */
-
 
         }
-        public void MouseHandler()
+
+        public override void Update()
         {
+            // update buttons
+            for (int i = 0; i < items.Count; i++)
+            {
+                items[i].Update();
+            }
 
-            px = MouseManager.X;
-            py = MouseManager.Y;
-            Sys.Graphics.Point[] points = new Sys.Graphics.Point[]
-            {
-                    new Sys.Graphics.Point((int)MouseManager.X, (int)MouseManager.Y),
-                    new Sys.Graphics.Point((int)MouseManager.X-1, (int)MouseManager.Y-1),
-                    new Sys.Graphics.Point((int)MouseManager.X-1, (int)MouseManager.Y+1),
-                    new Sys.Graphics.Point((int)MouseManager.X+1, (int)MouseManager.Y-1),
-            };
-            foreach (Tuple<Sys.Graphics.Point, Color> pixelData in savedPixels)
-            {
-                canvas.DrawPoint(new Pen(pixelData.Item2), pixelData.Item1);
-            }
-            foreach (Sys.Graphics.Point p in points)
-            {
-                savedPixels.Add(new Tuple<Sys.Graphics.Point, Color>(p, canvas.GetPointColor(p.X, p.Y)));
-                canvas.DrawPoint(pen, p);
-            }
-            if (THE == true)
-            {
-                for (int i = 0; i <= 350; i++)
-                {
-                    canvas.DrawRectangle(pen, i, i, i, i);
-                    pen.Color = Color.Blue;
-                }
-                pen.Color = Color.White;
-            }
+            this.height = (items.Count * 24) + 12;
+
+            // update base
+            base.Update();
         }
+
+        public override void Draw()
+        {
+            // get style colors
+            uint bg = style.C_BG;
+            uint fg = style.C_TEXT;
+            uint bord = style.C_BORDER;
+            uint bordOuter = style.C_BORDER_OUTER;
+            uint bordInner = style.C_BORDER_INNER;
+            uint fgShadow = style.C_TEXT_SHADOW;
+            uint fgHover = style.C_TEXT_HOVER;
+            uint fgDown = style.C_TEXT_DOWN;
+            uint dis = style.C_DISABLED;
+            uint shadow = style.C_SHADOW;
+            uint hov = style.C_HOVER;
+            uint dwn = style.C_DOWN;
+
+            // get style sizes
+            int bordSize = style.SIZE_BORDER;
+            int shadowSize = style.SIZE_SHADOW;
+            int fgShadowSize = style.SIZE_TEXT_SHADOW;
+            int borderStyle = style.BORDER_STYLE;
+
+            // draw background
+            Graphics2D.FillRectangle(bounds, bg);
+
+            // draw border
+            Graphics2D.DrawRectangle(bounds, 1, bord);
+
+            // draw buttons
+            for (int i = 0; i < items.Count; i++)
+            {
+                items[i].Draw();
+            }
         }
     }
-
+}

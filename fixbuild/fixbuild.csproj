@@ -115,4 +115,8 @@
         <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="GraphicsHandler\" />
+    </ItemGroup>
+
 </Project>
