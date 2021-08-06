@@ -28,6 +28,12 @@ namespace fixbuild.ChaseGraphicsAPI
             savedPixels = new List<Tuple<Sys.Graphics.Point, Color>>();
             MouseManager.ScreenHeight = (UInt32)canvas.Mode.Rows;
             MouseManager.ScreenWidth = (UInt32)canvas.Mode.Columns;
+            for (int i = 0; i <= 30; i++)
+            {
+                canvas.DrawRectangle(pen, 0, 0, i, i);
+                pen.Color = Color.Blue;
+            }
+            pen.Color = Color.White;
             /* A PaleVioletRed rectangle */
 
 
