@@ -258,6 +258,10 @@ namespace fixbuild
 
                     FileManager.DeleteFile(preprefilename2);
                 }
+                if (cmd == "box")
+                {
+                    fixbuild.ChaseGraphicsAPI.Graphics.THE = true;
+                }
                 if (cmd == "ls")
                 {
                     var directory_list = Sys.FileSystem.VFS.VFSManager.GetDirectoryListing(@cddefault);

@@ -8,9 +8,10 @@ using Cosmos.System;
 
 namespace fixbuild.ChaseGraphicsAPI
 {
-    
+
     class Graphics
     {
+        public static bool THE;
         private Canvas canvas;
         private Pen pen;
         private MouseState mouseState;
@@ -25,13 +26,11 @@ namespace fixbuild.ChaseGraphicsAPI
             px = 3;
             py = 3;
             savedPixels = new List<Tuple<Sys.Graphics.Point, Color>>();
-                MouseManager.ScreenHeight = (UInt32)canvas.Mode.Rows;
+            MouseManager.ScreenHeight = (UInt32)canvas.Mode.Rows;
             MouseManager.ScreenWidth = (UInt32)canvas.Mode.Columns;
             /* A PaleVioletRed rectangle */
-            pen.Color = Color.PaleVioletRed;
-            for (int i = 0; i <= 350; i++) {
-                canvas.DrawRectangle(pen, 350, 350, 350, 350);
-            }
+
+
         }
         public void MouseHandler()
         {
@@ -53,6 +52,15 @@ namespace fixbuild.ChaseGraphicsAPI
             {
                 savedPixels.Add(new Tuple<Sys.Graphics.Point, Color>(p, canvas.GetPointColor(p.X, p.Y)));
                 canvas.DrawPoint(pen, p);
+            }
+            if (THE == true)
+            {
+                for (int i = 0; i <= 350; i++)
+                {
+                    canvas.DrawRectangle(pen, i, i, i, i);
+                    pen.Color = Color.Blue;
+                }
+                pen.Color = Color.White;
             }
         }
         }
