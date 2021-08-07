@@ -258,6 +258,24 @@ namespace fixbuild
 
                     FileManager.DeleteFile(preprefilename2);
                 }
+                if (cmd == "copy")
+                {
+                    Console.WriteLine("filename of file to copy");
+                    var prefile = Console.ReadLine();
+                    var file = Sys.FileSystem.VFS.VFSManager.GetFile(@cddefault + prefile).GetFileStream();
+                    byte[] data = new byte[file.Length];
+                    file.Read(data, 0, (int)file.Length);
+                    string content = Encoding.Default.GetString(data);
+                    Console.WriteLine("filename of the new file");
+                    string filename = Console.ReadLine();
+                    Sys.FileSystem.VFS.VFSManager.CreateFile(@cddefault + filename);
+                    var filenew = Sys.FileSystem.VFS.VFSManager.GetFile(@cddefault + filename);
+                    var filestream = filenew.GetFileStream();
+                    byte[] data1 = Encoding.ASCII.GetBytes(content);
+                    filestream.Write(data, 0, (int)content.Length);
+
+                    Console.WriteLine("copied");
+                }
                 if (cmd == "box")
                 {
                     fixbuild.ChaseGraphicsAPI.Graphics.THE = true;
