@@ -143,31 +143,38 @@ namespace fixbuild
                         Kernel.gui = new Graphics();
 
                     }
+                    return;
                 }
                 if (cmd == "clear")
                 {
                     Console.Clear();
+                    return;
                 }
                 if (cmd == "shutdown")
                 {
                     Sys.Power.Shutdown();
+                    return;
                 }
                 if (cmd == "restart")
                 {
                     Sys.Power.Reboot();
+                    return;
                 }
                 if (cmd == "help")
                 {
                     Console.WriteLine("cmds: version, calc, readfile, ls, createfile, editfile, deletefile, help, createdirectory, removedirectory, cd, cdfullpath, time, settings, pwd, graphics, clear");
+                    return;
                 }
                 if (cmd == "pwd")
                 {
                     Console.WriteLine(cddefault);
+                    return;
                 }
                 if (cmd == "version")
                 {
                     Console.WriteLine("Version: 11.0.1, ChaseOS is an Operating system which is a small project, there is no gui design.");
                     Console.WriteLine("Credits to Reese or chickendad#3076 for being a developer. Owner: Chase or dff#1307");
+                    return;
                 }
                 if (cmd == "createdirectory")
                 {
@@ -175,6 +182,7 @@ namespace fixbuild
                     string prefolder = Console.ReadLine();
                     FileManager.CreateDirectory(@cddefault + prefolder);
                     Console.WriteLine("Directory created.");
+                    return;
                 }
                 if (cmd == "cd")
                 {
@@ -182,17 +190,19 @@ namespace fixbuild
                     string precd = Console.ReadLine();
                     cddefault = @cddefault + precd;
                     Console.WriteLine("Now in path directory");
+                    return;
                 }
                 if (cmd == "cdfullpath")
                 {
                     Console.WriteLine("full path?");
                     string predest = Console.ReadLine();
                     cddefault = @predest;
+                    return;
                 }
                 if (cmd == "time")
                 {
                     Console.WriteLine(DateTime.Now.ToString());
-
+                    return;
                 }
                 if (cmd == "settings")
                 {
@@ -221,10 +231,39 @@ namespace fixbuild
                     {
                         Console.ForegroundColor = ConsoleColor.Black;
                     }
+                    if (color.ToLower() == "blue")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                    }
+                    if (color.ToLower() == "cyan")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                    }
+                    if (color.ToLower() == "darkblue")
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                    }
+                    if (color.ToLower() == "darkred")
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                    }
+                    if (color.ToLower() == "darkyellow")
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    }
+                    if (color.ToLower() == "gray")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                    }
+                    if (color.ToLower() == "magenta")
+                    {
+                        Console.ForegroundColor = ConsoleColor.Magenta;
+                    }
                     if (color.ToLower() == "white")
                     {
                         Console.ForegroundColor = ConsoleColor.White;
                     }
+                    return;
                 }
                 if (cmd == "calc")
                 {
@@ -297,6 +336,7 @@ namespace fixbuild
                     // Wait for the user to respond before closing.
                     Console.Write("Press any key to close the Calculator console app...");
                     Console.ReadKey();
+                    return;
                 }
                 if (cmd == "removedirectory")
                 {
@@ -304,12 +344,14 @@ namespace fixbuild
                     string predir = Console.ReadLine();
 
                     FileManager.DeleteDirectory(FileManager.GetDirectory(@cddefault + predir));
+                    return;
                 }
                 if (cmd == "createfile")
                 {
                     Console.WriteLine("filename");
                     string filename = Console.ReadLine();
                     Sys.FileSystem.VFS.VFSManager.CreateFile(@cddefault + filename);
+                    return;
 
                 }
                 if (cmd == "editfile")
@@ -323,6 +365,7 @@ namespace fixbuild
                     byte[] data = Encoding.ASCII.GetBytes(contents);
                     filestream.Write(data, 0, (int)contents.Length);
                     Console.WriteLine("file edited sucessfully");
+                    return;
                 }
                 if (cmd == "deletefile")
                 {
@@ -331,6 +374,7 @@ namespace fixbuild
                     var preprefilename2 = Sys.FileSystem.VFS.VFSManager.GetFile(@cddefault + prefilename2);
 
                     FileManager.DeleteFile(preprefilename2);
+                    return;
                 }
                 if (cmd == "copy")
                 {
@@ -349,10 +393,12 @@ namespace fixbuild
                     filestream.Write(data, 0, (int)content.Length);
 
                     Console.WriteLine("copied");
+                    return;
                 }
                 if (cmd == "box")
                 {
                     fixbuild.ChaseGraphicsAPI.Graphics.THE = true;
+                    return;
                 }
                 if (cmd == "ls")
                 {
@@ -362,6 +408,7 @@ namespace fixbuild
                     {
                         Console.WriteLine(directoryEntry.mName);
                     }
+                    return;
                 }
                 if (cmd == "readfile")
                 {
@@ -371,13 +418,17 @@ namespace fixbuild
                     byte[] data = new byte[file.Length];
                     file.Read(data, 0, (int)file.Length);
                     Console.WriteLine(Encoding.Default.GetString(data));
+                    return;
                 }
-
+                else
+                {
+                    Console.WriteLine("Invalid command. Type help foir cmds.");
+                }
             }
             catch (Exception e)
             {
-                Console.WriteLine("oh no your code just got downed");
-                Console.WriteLine("how to revive: fix " + e.ToString());
+                Console.WriteLine("An error has occured.");
+                Console.WriteLine(e.ToString());
 
             }
 
