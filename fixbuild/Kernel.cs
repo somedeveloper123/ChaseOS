@@ -28,7 +28,7 @@ namespace fixbuild
             Console.WriteLine("loading UI");
 
 
-            cddefault = @"0:/";
+            cddefault = @"0:\";
 
             
             
@@ -52,13 +52,13 @@ namespace fixbuild
                 }
                 Console.Write("Time: "+ DateTime.Now +" Path: "+ cddefault + " ChaseOS>");
                 string cmd = Console.ReadLine();
-                if (cddefault.EndsWith(@"/"))
+                if (cddefault.EndsWith(@"\"))
                 {
 
                 }
                 else
                 {
-                    cddefault = cddefault + "/";
+                    cddefault = cddefault + @"\";
                 }
                 if (cmd == "graphics")
                 {
