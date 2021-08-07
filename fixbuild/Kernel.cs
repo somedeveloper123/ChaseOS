@@ -158,7 +158,7 @@ namespace fixbuild
                 }
                 if (cmd == "help")
                 {
-                    Console.WriteLine("cmds: version, calc, readfile, ls, createfile, editfile, deletefile, help, createdirectory, removedirectory, cd, cdfullpath, time, settings, pwd");
+                    Console.WriteLine("cmds: version, calc, readfile, ls, createfile, editfile, deletefile, help, createdirectory, removedirectory, cd, cdfullpath, time, settings, pwd, graphics, clear");
                 }
                 if (cmd == "pwd")
                 {
