@@ -16,6 +16,7 @@ namespace fixbuild
     {
         private static Graphics gui;
         public string cddefault;
+        public bool login;
         CosmosVFS FileManager = new Sys.FileSystem.CosmosVFS();
         protected override void BeforeRun()
         {
@@ -29,8 +30,81 @@ namespace fixbuild
 
 
             cddefault = @"0:\";
+            try
+            {
+                if (FileManager.GetFile(@"0:\login.txt") != null && FileManager.GetFile(@"0:\loginData.txt") != null)
+                {
+                    var thing = FileManager.GetFile(@"0:\login.txt");
+                    var thingr = FileManager.GetFile(@"0:\loginData.txt");
+                    var check = thing.GetFileStream();
+                    
+                    byte[] dataread1 = new byte[1];
+                    byte[] dataread2 = new byte[1];
+                    var datastream1 = thingr.GetFileStream();
+                    datastream1.Read(dataread1, 0, 1);
+                    datastream1.Read(dataread2, 0, 1);
+                    int data1 = Convert.ToInt32(Encoding.Default.GetString(dataread1));
+                    int data2 = Convert.ToInt32(Encoding.Default.GetString(dataread2));
+                    byte[] buffer = new byte[data1];
+                    string UsernameReal = "";
 
-            
+
+                        
+                        
+
+                        check.Read(buffer, 0, (data1));
+                    UsernameReal = Encoding.Default.GetString(buffer);
+
+                    string pass;
+                    byte[] passWordReal = new byte[data2];
+                    check.Read(passWordReal, 0, (data2));
+                    pass = Encoding.Default.GetString(passWordReal);
+                    check.Close();
+                    while (login == false)
+                    {
+                        Console.WriteLine("User?");
+                        Console.WriteLine(pass);
+                        string user = Console.ReadLine();
+                        Console.WriteLine("Password:");
+                        string password = Console.ReadLine();
+                        if (user == UsernameReal && password == pass)
+                        {
+                            login = true;
+                            Console.WriteLine("Welcome");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Incorrect");
+                        }
+                    }
+                }
+                else
+                {
+                    Sys.FileSystem.VFS.VFSManager.CreateFile(@"0:\login.txt");
+                    Sys.FileSystem.VFS.VFSManager.CreateFile(@"0:\loginData.txt");
+                    Console.WriteLine("Setup your username:");
+                    string user = Console.ReadLine();
+                    Console.WriteLine("Setup password for login:");
+                    string password = Console.ReadLine();
+                    Console.WriteLine("Preparing...");
+                    var file = Sys.FileSystem.VFS.VFSManager.GetFile(@"0:\login.txt");
+                    var filestream = file.GetFileStream();
+                    string contents = @"" + user + "" + password;
+                    byte[] data = Encoding.ASCII.GetBytes(contents);
+                    filestream.Write(data, 0, (int)contents.Length);
+                    var file2 = Sys.FileSystem.VFS.VFSManager.GetFile(@"0:\loginData.txt");
+                    var filestream2 = file2.GetFileStream();
+                    string contents2 = @"" + user.Length +""+ password.Length;
+                    byte[] data2 = Encoding.ASCII.GetBytes(contents2);
+                    filestream2.Write(data2, 0, (int)contents2.Length);
+                }
+
+
+
+            } catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             
         }
 
