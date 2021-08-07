@@ -63,7 +63,7 @@ namespace fixbuild
                     while (login == false)
                     {
                         Console.WriteLine("User?");
-                        Console.WriteLine(pass);
+
                         string user = Console.ReadLine();
                         Console.WriteLine("Password:");
                         string password = Console.ReadLine();
