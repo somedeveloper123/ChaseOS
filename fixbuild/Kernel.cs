@@ -17,6 +17,7 @@ namespace fixbuild
         private static Graphics gui;
         public string cddefault;
         public bool login;
+        public bool driveCon;
         CosmosVFS FileManager = new Sys.FileSystem.CosmosVFS();
         protected override void BeforeRun()
         {
@@ -77,11 +78,26 @@ namespace fixbuild
                             Console.WriteLine("Incorrect");
                         }
                     }
+                    while (driveCon == false)
+                    {
+                        Console.WriteLine(@"Please type a disk for Chase OS to use. MUST BE FAT32. Ex: C:\");
+                        string drive = Console.ReadLine();
+                        if (FileManager.IsValidDriveId(drive))
+                        {
+                            cddefault = drive;
+                            driveCon = true;
+                        } else
+                        {
+                            Console.WriteLine("Invalid drive.");
+                        }
+                    }
+
                 }
                 else
                 {
                     Sys.FileSystem.VFS.VFSManager.CreateFile(@"0:\login.txt");
                     Sys.FileSystem.VFS.VFSManager.CreateFile(@"0:\loginData.txt");
+                    Console.WriteLine("Welcome to Chase OS! Lets get some things started.");
                     Console.WriteLine("Setup your username:");
                     string user = Console.ReadLine();
                     Console.WriteLine("Setup password for login:");
@@ -97,6 +113,24 @@ namespace fixbuild
                     string contents2 = @"" + user.Length +""+ password.Length;
                     byte[] data2 = Encoding.ASCII.GetBytes(contents2);
                     filestream2.Write(data2, 0, (int)contents2.Length);
+
+                    while (driveCon == false)
+                    {
+                        Console.WriteLine(@"Please type a disk for Chase OS to use (WARNING. This will format your hard drive) MUST BE FAT32. Ex: C:\");
+                        string drive2 = Console.ReadLine();
+                        if (FileManager.IsValidDriveId(drive2))
+                        {
+                            cddefault = drive2;
+                            driveCon = true;
+                            Console.WriteLine("Preparing drive.");
+                            FileManager.Format(drive2,"FAT32",false);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid drive.");
+                        }
+                    }
+
                 }
 
 
@@ -124,7 +158,7 @@ namespace fixbuild
                     Kernel.gui.MouseHandler();
                     return;
                 }
-                Console.Write("Time: "+ DateTime.Now +" Path: "+ cddefault + " ChaseOS>");
+                Console.Write("Time: " + DateTime.Now + " Path: " + cddefault + " ChaseOS>");
                 string cmd = Console.ReadLine();
                 if (cddefault.EndsWith(@"\"))
                 {
@@ -162,7 +196,7 @@ namespace fixbuild
                 }
                 if (cmd == "help")
                 {
-                    Console.WriteLine("cmds: version, calc, readfile, ls, createfile, editfile, deletefile, help, createdirectory, removedirectory, cd, cdfullpath, time, settings, pwd, graphics, clear");
+                    Console.WriteLine("cmds: version, calc, readfile, ls, createfile, editfile, deletefile, help, createdirectory, removedirectory, cd, cdfullpath, time, settings, pwd, graphics, clear, setdrive");
                     return;
                 }
                 if (cmd == "pwd")
@@ -210,7 +244,7 @@ namespace fixbuild
                     string color = Console.ReadLine();
                     if (color.ToLower() == "blue")
                     {
- 
+
                         Console.ForegroundColor = ConsoleColor.Blue;
                     }
 
@@ -418,6 +452,9 @@ namespace fixbuild
                     byte[] data = new byte[file.Length];
                     file.Read(data, 0, (int)file.Length);
                     Console.WriteLine(Encoding.Default.GetString(data));
+                    return;
+                }
+                if (cmd == "") {
                     return;
                 }
                 else

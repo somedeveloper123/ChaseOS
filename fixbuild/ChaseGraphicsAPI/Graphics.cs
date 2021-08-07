@@ -36,6 +36,15 @@ namespace fixbuild.ChaseGraphicsAPI
 
 
             }
+
+            if (THE == true)
+            {
+                for (int i = 0; i <= 350; i++)
+                {
+                    canvas.DrawRectangle(pen, i, i, i, i);
+                    pen.Color = Color.Blue;
+                }
+            }
             pen.Color = Color.White;
             }
             public void MouseHandler()
@@ -43,6 +52,7 @@ namespace fixbuild.ChaseGraphicsAPI
 
             px = MouseManager.X;
             py = MouseManager.Y;
+            mouseState = MouseManager.MouseState;
             Sys.Graphics.Point[] points = new Sys.Graphics.Point[]
             {
                     new Sys.Graphics.Point((int)MouseManager.X+1, (int)MouseManager.Y+1),
@@ -50,7 +60,7 @@ namespace fixbuild.ChaseGraphicsAPI
                     new Sys.Graphics.Point((int)MouseManager.X+2, (int)MouseManager.Y+1),
                     new Sys.Graphics.Point((int)MouseManager.X+2, (int)MouseManager.Y+2),
             };
-            if (mouseState == MouseState.Left)
+            if (mouseState == MouseState.Left && py <= 50 && py <= 50)
             {
                 pen.Color = Color.Red;
             } else
@@ -66,21 +76,8 @@ namespace fixbuild.ChaseGraphicsAPI
                 savedPixels.Add(new Tuple<Sys.Graphics.Point, Color>(p, canvas.GetPointColor(p.X, p.Y)));
                 canvas.DrawPoint(pen, p);
             }
-            if (THE == true)
-            {
-                for (int i = 0; i <= 350; i++)
-                {
-                    canvas.DrawRectangle(pen, i, i, i, i);
-                    pen.Color = Color.Blue;
-                }
-            }
-                        for (int i = 0; i <= 50; i++)
-            {
-                canvas.DrawRectangle(pen, 0, 0, i, i);
-                pen.Color = Color.Blue;
-
-
-            }
+            
+                        
             pen.Color = Color.White;
         }
         }
