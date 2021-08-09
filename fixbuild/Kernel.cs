@@ -25,7 +25,7 @@ namespace fixbuild
             Console.WriteLine("preparing file system");
             Sys.FileSystem.VFS.VFSManager.RegisterVFS(FileManager);
 
-            Console.WriteLine("filesys created");
+            Console.WriteLine("filesystem ready");
 
             Console.WriteLine("loading UI");
 
@@ -38,7 +38,7 @@ namespace fixbuild
                     var thing = FileManager.GetFile(@"0:\login.txt");
                     var thingr = FileManager.GetFile(@"0:\loginData.txt");
                     var check = thing.GetFileStream();
-                    
+
                     byte[] dataread1 = new byte[1];
                     byte[] dataread2 = new byte[1];
                     var datastream1 = thingr.GetFileStream();
@@ -50,10 +50,10 @@ namespace fixbuild
                     string UsernameReal = "";
 
 
-                        
-                        
 
-                        check.Read(buffer, 0, (data1));
+
+
+                    check.Read(buffer, 0, (data1));
                     UsernameReal = Encoding.Default.GetString(buffer);
 
                     string pass;
@@ -86,7 +86,8 @@ namespace fixbuild
                         {
                             cddefault = drive;
                             driveCon = true;
-                        } else
+                        }
+                        else
                         {
                             Console.WriteLine("Invalid drive.");
                         }
@@ -110,7 +111,7 @@ namespace fixbuild
                     filestream.Write(data, 0, (int)contents.Length);
                     var file2 = Sys.FileSystem.VFS.VFSManager.GetFile(@"0:\loginData.txt");
                     var filestream2 = file2.GetFileStream();
-                    string contents2 = @"" + user.Length +""+ password.Length;
+                    string contents2 = @"" + user.Length + "" + password.Length;
                     byte[] data2 = Encoding.ASCII.GetBytes(contents2);
                     filestream2.Write(data2, 0, (int)contents2.Length);
 
@@ -123,7 +124,7 @@ namespace fixbuild
                             cddefault = drive2;
                             driveCon = true;
                             Console.WriteLine("Preparing drive.");
-                            FileManager.Format(drive2,"FAT32",false);
+                            FileManager.Format(drive2, "FAT32", false);
                         }
                         else
                         {
@@ -135,13 +136,14 @@ namespace fixbuild
 
 
 
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
-            
-        }
 
+        }
+        int help = 0;
         protected override void Run()
         {
 
@@ -189,6 +191,18 @@ namespace fixbuild
                     Sys.Power.Shutdown();
                     return;
                 }
+                if (cmd == "quickformat")
+                {
+                    Console.WriteLine(@"Drive? Example: 0:\");
+                    string driveId = Console.ReadLine();
+                    FileManager.Format(driveId, "FAT32", true);
+                }
+                if (cmd == "format")
+                {
+                    Console.WriteLine(@"Drive? Example: 0:\");
+                    string driveId = Console.ReadLine();
+                    FileManager.Format(driveId, "FAT32", false);
+                }
                 if (cmd == "restart")
                 {
                     Sys.Power.Reboot();
@@ -196,7 +210,7 @@ namespace fixbuild
                 }
                 if (cmd == "help")
                 {
-                    Console.WriteLine("cmds: version, calc, readfile, ls, createfile, editfile, deletefile, help, createdirectory, removedirectory, cd, cdfullpath, time, settings, pwd, graphics, clear, setdrive");
+                    Console.WriteLine("cmds: version, calc, readfile, ls, createfile, editfile, deletefile, help, createdirectory, removedirectory, cd, cdfullpath, time, settings, pwd, graphics, clear, setdrive, quickformat, format");
                     return;
                 }
                 if (cmd == "pwd")
@@ -206,7 +220,7 @@ namespace fixbuild
                 }
                 if (cmd == "version")
                 {
-                    Console.WriteLine("Version: 11.0.1, ChaseOS is an Operating system which is a small project, there is no gui design.");
+                    Console.WriteLine("Version: 13.1.0, ChaseOS is an Operating system which is a small project, there is no gui design.");
                     Console.WriteLine("Credits to Reese or chickendad#3076 for being a developer. Owner: Chase or dff#1307");
                     return;
                 }
@@ -240,6 +254,7 @@ namespace fixbuild
                 }
                 if (cmd == "settings")
                 {
+
                     Console.WriteLine("What color for text color?");
                     string color = Console.ReadLine();
                     if (color.ToLower() == "blue")
@@ -305,7 +320,7 @@ namespace fixbuild
                     int num1 = 0; int num2 = 0;
 
                     // Display title as the C# console calculator app.
-                    Console.WriteLine("Console Calculator in C#\r");
+                    Console.WriteLine("Welcome to the ChaseOS calculator\r");
                     Console.WriteLine("------------------------\n");
 
                     // Ask the user to type the first number.
@@ -319,6 +334,7 @@ namespace fixbuild
                     Console.WriteLine("\tm - Multiply");
                     Console.WriteLine("\td - Divide");
                     Console.WriteLine("\tsq - Square");
+                    Console.WriteLine("\tsqr - Square root");
                     Console.Write("Which option do you want to do? ");
 
                     // Use a switch statement to do the math.
@@ -366,6 +382,13 @@ namespace fixbuild
                             // Ask the user to type the second number.
                             Console.WriteLine($"Your result: " + num1 + " * " + num1 + " = " + (num1 * num1));
                             break;
+                        case "sqr":
+                            Console.WriteLine("What number to find the square root of?");
+                            num1 = Convert.ToInt32(Console.ReadLine());
+                            Math.Sqrt(num1);
+
+                            Console.WriteLine($"Your result: " + num1);
+                            break;
                     }
                     // Wait for the user to respond before closing.
                     Console.Write("Press any key to close the Calculator console app...");
@@ -382,7 +405,7 @@ namespace fixbuild
                 }
                 if (cmd == "createfile")
                 {
-                    Console.WriteLine("filename");
+                    Console.WriteLine("filename?");
                     string filename = Console.ReadLine();
                     Sys.FileSystem.VFS.VFSManager.CreateFile(@cddefault + filename);
                     return;
@@ -390,7 +413,7 @@ namespace fixbuild
                 }
                 if (cmd == "editfile")
                 {
-                    Console.WriteLine("filename");
+                    Console.WriteLine("filename?");
                     string filename1 = Console.ReadLine();
                     var file = Sys.FileSystem.VFS.VFSManager.GetFile(@cddefault + filename1);
                     var filestream = file.GetFileStream();
@@ -426,7 +449,7 @@ namespace fixbuild
                     byte[] data1 = Encoding.ASCII.GetBytes(content);
                     filestream.Write(data, 0, (int)content.Length);
 
-                    Console.WriteLine("copied");
+                    Console.WriteLine("file copied succesfully");
                     return;
                 }
                 if (cmd == "box")
@@ -446,7 +469,7 @@ namespace fixbuild
                 }
                 if (cmd == "readfile")
                 {
-                    Console.WriteLine("filename");
+                    Console.WriteLine("filename?");
                     var prefile = Console.ReadLine();
                     var file = Sys.FileSystem.VFS.VFSManager.GetFile(@cddefault + prefile).GetFileStream();
                     byte[] data = new byte[file.Length];
@@ -454,13 +477,32 @@ namespace fixbuild
                     Console.WriteLine(Encoding.Default.GetString(data));
                     return;
                 }
-                if (cmd == "") {
+                if (cmd == "setdrive")
+                {
+                    Console.WriteLine(@"Drive? Example: 0:\");
+                    string driveid = Console.ReadLine();
+                    bool validDrive = FileManager.IsValidDriveId(driveid);
+                    if (validDrive)
+                    {
+                        Console.WriteLine("Warning: Drive can be corrupted when changes are made to the drive. Continue? Y/N");
+                        string confirm = Console.ReadLine();
+                        if (confirm == "Y")
+                        {
+                            cddefault = driveid;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid drive.");
+                    }
                     return;
                 }
-                else
+                if (cmd == "")
                 {
-                    Console.WriteLine("Invalid command. Type help foir cmds.");
+                    return;
                 }
+                Console.WriteLine("The command '" + cmd + "'  is invalid. Type help for a list of commands.");
+
             }
             catch (Exception e)
             {
@@ -470,5 +512,5 @@ namespace fixbuild
             }
 
         }
-    } 
+    }
 }

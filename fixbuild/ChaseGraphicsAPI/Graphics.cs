@@ -29,13 +29,7 @@ namespace fixbuild.ChaseGraphicsAPI
             savedPixels = new List<Tuple<Sys.Graphics.Point, Color>>();
             MouseManager.ScreenHeight = (UInt32)canvas.Mode.Rows;
             MouseManager.ScreenWidth = (UInt32)canvas.Mode.Columns;
-            for (int i = 0; i <= 50; i++)
-            {
-                canvas.DrawRectangle(pen, 0, 0, i, i);
-                pen.Color = Color.Blue;
-
-
-            }
+            Button(50, 0, 0, pen);
 
             if (THE == true)
             {
@@ -47,6 +41,14 @@ namespace fixbuild.ChaseGraphicsAPI
             }
             pen.Color = Color.White;
             }
+        public void Button(int size, int x, int y, Pen draw)
+        {
+            for (int i = 0; i <= size; i++)
+            {
+                canvas.DrawRectangle(draw, x, y, i, i);
+            }
+        }
+
             public void MouseHandler()
         {
 
@@ -60,7 +62,7 @@ namespace fixbuild.ChaseGraphicsAPI
                     new Sys.Graphics.Point((int)MouseManager.X+2, (int)MouseManager.Y+1),
                     new Sys.Graphics.Point((int)MouseManager.X+2, (int)MouseManager.Y+2),
             };
-            if (mouseState == MouseState.Left && py <= 50 && py <= 50)
+            if (mouseState == MouseState.Middle && py <= 50 && py <= 50)
             {
                 pen.Color = Color.Red;
             } else
