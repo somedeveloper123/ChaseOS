@@ -107,16 +107,19 @@
 
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
       <DebugEnabled>False</DebugEnabled>
+      <Optimize>false</Optimize>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="GraphicsHandler\**" />
+      <EmbeddedResource Remove="GraphicsHandler\**" />
+      <None Remove="GraphicsHandler\**" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Cosmos.Build" Version="0-*" NoWarn="NU1604" />
         <PackageReference Include="Cosmos.Debug.Kernel" Version="0-*" NoWarn="NU1604" />
         <PackageReference Include="Cosmos.System2" Version="0-*" NoWarn="NU1604" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="GraphicsHandler\" />
     </ItemGroup>
 
 </Project>

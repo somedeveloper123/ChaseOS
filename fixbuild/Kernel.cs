@@ -8,7 +8,7 @@ using System.Drawing;
 using Cosmos.System.Graphics;
 using Cosmos.System.Network;
 using fixbuild.ChaseGraphicsAPI;
-
+using Cosmos.Core;
 namespace fixbuild
 {
 
@@ -21,16 +21,22 @@ namespace fixbuild
         CosmosVFS FileManager = new Sys.FileSystem.CosmosVFS();
         protected override void BeforeRun()
         {
-            Console.WriteLine("Welcome to ChaseOS, the calculator that can store files!");
-            Console.WriteLine("preparing file system");
-            Sys.FileSystem.VFS.VFSManager.RegisterVFS(FileManager);
+            try
+            {
+                Console.WriteLine("Welcome to ChaseOS, the calculator that can store files!");
+                Console.WriteLine("preparing file system");
+                Sys.FileSystem.VFS.VFSManager.RegisterVFS(FileManager);
 
-            Console.WriteLine("filesystem ready");
+                Console.WriteLine("filesystem ready");
 
-            Console.WriteLine("loading UI");
+                Console.WriteLine("loading UI");
+            } catch
+            {
 
+            }
 
             cddefault = @"0:\";
+
             try
             {
                 if (FileManager.GetFile(@"0:\login.txt") != null && FileManager.GetFile(@"0:\loginData.txt") != null)
@@ -61,10 +67,10 @@ namespace fixbuild
                     check.Read(passWordReal, 0, (data2));
                     pass = Encoding.Default.GetString(passWordReal);
                     check.Close();
+
                     while (login == false)
                     {
                         Console.WriteLine("User?");
-
                         string user = Console.ReadLine();
                         Console.WriteLine("Password:");
                         string password = Console.ReadLine();
@@ -78,20 +84,6 @@ namespace fixbuild
                             Console.WriteLine("Incorrect");
                         }
                     }
-                    while (driveCon == false)
-                    {
-                        Console.WriteLine(@"Please type a disk for Chase OS to use. MUST BE FAT32. Ex: C:\");
-                        string drive = Console.ReadLine();
-                        if (FileManager.IsValidDriveId(drive))
-                        {
-                            cddefault = drive;
-                            driveCon = true;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Invalid drive.");
-                        }
-                    }
 
                 }
                 else
@@ -100,6 +92,7 @@ namespace fixbuild
                     Sys.FileSystem.VFS.VFSManager.CreateFile(@"0:\loginData.txt");
                     Console.WriteLine("Welcome to Chase OS! Lets get some things started.");
                     Console.WriteLine("Setup your username:");
+
                     string user = Console.ReadLine();
                     Console.WriteLine("Setup password for login:");
                     string password = Console.ReadLine();
@@ -115,25 +108,9 @@ namespace fixbuild
                     byte[] data2 = Encoding.ASCII.GetBytes(contents2);
                     filestream2.Write(data2, 0, (int)contents2.Length);
 
-                    while (driveCon == false)
-                    {
-                        Console.WriteLine(@"Please type a disk for Chase OS to use (WARNING. This will format your hard drive) MUST BE FAT32. Ex: C:\");
-                        string drive2 = Console.ReadLine();
-                        if (FileManager.IsValidDriveId(drive2))
-                        {
-                            cddefault = drive2;
-                            driveCon = true;
-                            Console.WriteLine("Preparing drive.");
-                            FileManager.Format(drive2, "FAT32", false);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Invalid drive.");
-                        }
-                    }
+
 
                 }
-
 
 
             }
@@ -143,7 +120,7 @@ namespace fixbuild
             }
 
         }
-        int help = 0;
+
         protected override void Run()
         {
 
@@ -152,8 +129,7 @@ namespace fixbuild
 
 
 
-
-
+                
 
                 if (Kernel.gui != null)
                 {
@@ -179,6 +155,31 @@ namespace fixbuild
                         Kernel.gui = new Graphics();
 
                     }
+                    return;
+                }
+
+                if (cmd == "checkram")
+                {
+                    Console.WriteLine(CPU.GetAmountOfRAM());
+                    return;
+
+                }
+                if (cmd == "checkcycles")
+                {
+
+                    Console.WriteLine(CPU.GetCPUCycleSpeed());
+                    return;
+                }
+
+                if (cmd == "checkuptime")
+                {
+                    Console.WriteLine(CPU.GetCPUUptime());
+                    return;
+                }
+                if (cmd == "checkvendorname")
+                {
+
+                    Console.WriteLine(CPU.GetCPUVendorName());
                     return;
                 }
                 if (cmd == "clear")
@@ -385,9 +386,9 @@ namespace fixbuild
                         case "sqr":
                             Console.WriteLine("What number to find the square root of?");
                             num1 = Convert.ToInt32(Console.ReadLine());
-                            Math.Sqrt(num1);
+                            
 
-                            Console.WriteLine($"Your result: " + num1);
+                            Console.WriteLine($"Your result: " + Math.Sqrt(num1));
                             break;
                     }
                     // Wait for the user to respond before closing.

@@ -20,6 +20,7 @@ namespace fixbuild.ChaseGraphicsAPI
 
         public Graphics()
         {
+            
             canvas = FullScreenCanvas.GetFullScreenCanvas();
             canvas.Clear(Color.Black);
             pen = new Pen(Color.White);
