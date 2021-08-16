@@ -9,6 +9,7 @@ using Cosmos.System.Graphics;
 using Cosmos.System.Network;
 using fixbuild.ChaseGraphicsAPI;
 using Cosmos.Core;
+using System.Threading;
 namespace fixbuild
 {
 
@@ -29,8 +30,9 @@ namespace fixbuild
 
                 Console.WriteLine("filesystem ready");
 
-                Console.WriteLine("loading UI");
-            } catch
+                Console.WriteLine("loading login");
+            }
+            catch
             {
 
             }
@@ -39,6 +41,7 @@ namespace fixbuild
 
             try
             {
+                int shutdown = 0;
                 if (FileManager.GetFile(@"0:\login.txt") != null && FileManager.GetFile(@"0:\loginData.txt") != null)
                 {
                     var thing = FileManager.GetFile(@"0:\login.txt");
@@ -70,19 +73,25 @@ namespace fixbuild
 
                     while (login == false)
                     {
-                        Console.WriteLine("User?");
+                        Console.WriteLine("Username?");
                         string user = Console.ReadLine();
                         Console.WriteLine("Password:");
                         string password = Console.ReadLine();
                         if (user == UsernameReal && password == pass)
                         {
                             login = true;
-                            Console.WriteLine("Welcome");
+                            Console.WriteLine("Welcome" + user);
                         }
                         else
                         {
-                            Console.WriteLine("Incorrect");
+                            Console.WriteLine("The username or password you entered is incorrect, try again");
+                            shutdown += 1;
+                            if (shutdown == 6)
+                            {
+                                Sys.Power.Shutdown();
+                            }
                         }
+
                     }
 
                 }
@@ -116,7 +125,7 @@ namespace fixbuild
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Console.WriteLine("The error '" + e + "' occured on startup, attempting to contine with boot");
             }
 
         }
@@ -126,10 +135,6 @@ namespace fixbuild
 
             try
             {
-
-
-
-                
 
                 if (Kernel.gui != null)
                 {
@@ -160,14 +165,12 @@ namespace fixbuild
 
                 if (cmd == "checkram")
                 {
-                    Console.WriteLine(CPU.GetAmountOfRAM());
+                    Console.WriteLine(CPU.GetAmountOfRAM()+" MB");
                     return;
-
                 }
                 if (cmd == "checkcycles")
                 {
-
-                    Console.WriteLine(CPU.GetCPUCycleSpeed());
+                    Console.WriteLine(CPU.GetCPUCycleSpeed()+" GHz");
                     return;
                 }
 
@@ -178,7 +181,6 @@ namespace fixbuild
                 }
                 if (cmd == "checkvendorname")
                 {
-
                     Console.WriteLine(CPU.GetCPUVendorName());
                     return;
                 }
@@ -221,7 +223,7 @@ namespace fixbuild
                 }
                 if (cmd == "version")
                 {
-                    Console.WriteLine("Version: 13.1.0, ChaseOS is an Operating system which is a small project, there is no gui design.");
+                    Console.WriteLine("Version: 14.0.1, ChaseOS is an Operating system which is a small project, there is no gui design.");
                     Console.WriteLine("Credits to Reese or chickendad#3076 for being a developer. Owner: Chase or dff#1307");
                     return;
                 }
@@ -255,16 +257,12 @@ namespace fixbuild
                 }
                 if (cmd == "settings")
                 {
-
                     Console.WriteLine("What color for text color?");
                     string color = Console.ReadLine();
                     if (color.ToLower() == "blue")
                     {
-
                         Console.ForegroundColor = ConsoleColor.Blue;
                     }
-
-
                     if (color.ToLower() == "red")
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
@@ -379,15 +377,12 @@ namespace fixbuild
                         case "sq":
                             Console.WriteLine("What number to square?");
                             num1 = Convert.ToInt32(Console.ReadLine());
-
                             // Ask the user to type the second number.
                             Console.WriteLine($"Your result: " + num1 + " * " + num1 + " = " + (num1 * num1));
                             break;
                         case "sqr":
                             Console.WriteLine("What number to find the square root of?");
                             num1 = Convert.ToInt32(Console.ReadLine());
-                            
-
                             Console.WriteLine($"Your result: " + Math.Sqrt(num1));
                             break;
                     }
@@ -400,8 +395,8 @@ namespace fixbuild
                 {
                     Console.WriteLine("Directory?");
                     string predir = Console.ReadLine();
-
                     FileManager.DeleteDirectory(FileManager.GetDirectory(@cddefault + predir));
+                    Console.WriteLine("The directory " + predir + " was removed succesfully");
                     return;
                 }
                 if (cmd == "createfile")
@@ -409,8 +404,8 @@ namespace fixbuild
                     Console.WriteLine("filename?");
                     string filename = Console.ReadLine();
                     Sys.FileSystem.VFS.VFSManager.CreateFile(@cddefault + filename);
+                    Console.WriteLine("File created succesfully");
                     return;
-
                 }
                 if (cmd == "editfile")
                 {
@@ -432,6 +427,7 @@ namespace fixbuild
                     var preprefilename2 = Sys.FileSystem.VFS.VFSManager.GetFile(@cddefault + prefilename2);
 
                     FileManager.DeleteFile(preprefilename2);
+                    Console.WriteLine("The file " + prefilename2 + " has been deleted");
                     return;
                 }
                 if (cmd == "copy")
@@ -442,14 +438,30 @@ namespace fixbuild
                     byte[] data = new byte[file.Length];
                     file.Read(data, 0, (int)file.Length);
                     string content = Encoding.Default.GetString(data);
-                    Console.WriteLine("filename of the new file");
-                    string filename = Console.ReadLine();
-                    Sys.FileSystem.VFS.VFSManager.CreateFile(@cddefault + filename);
-                    var filenew = Sys.FileSystem.VFS.VFSManager.GetFile(@cddefault + filename);
-                    var filestream = filenew.GetFileStream();
-                    byte[] data1 = Encoding.ASCII.GetBytes(content);
-                    filestream.Write(data, 0, (int)content.Length);
-
+                    Console.WriteLine("Would you like to make custom name for the copied file or use an auto-generated name?\n");
+                    Console.WriteLine("Example of auto-generated name: " + prefile + "-copy");
+                    Console.WriteLine("Type 'custom' or 'auto'");
+                    string name = Console.ReadLine();
+                    if (name == "custom")
+                    {
+                        Console.WriteLine("filename of the new file");
+                        string filename = Console.ReadLine();
+                        Sys.FileSystem.VFS.VFSManager.CreateFile(@cddefault + filename);
+                        var filenew = Sys.FileSystem.VFS.VFSManager.GetFile(@cddefault + filename);
+                        var filestream = filenew.GetFileStream();
+                        byte[] data1 = Encoding.ASCII.GetBytes(content);
+                        filestream.Write(data, 0, (int)content.Length);
+                    }
+                    if (name == "auto")
+                    {
+                        string auto = "-copy";
+                        string filename = prefile + auto;
+                        Sys.FileSystem.VFS.VFSManager.CreateFile(@cddefault + filename);
+                        var filenew = Sys.FileSystem.VFS.VFSManager.GetFile(@cddefault + filename);
+                        var filestream = filenew.GetFileStream();
+                        byte[] data1 = Encoding.ASCII.GetBytes(content);
+                        filestream.Write(data, 0, (int)content.Length);
+                    }
                     Console.WriteLine("file copied succesfully");
                     return;
                 }
@@ -461,7 +473,6 @@ namespace fixbuild
                 if (cmd == "ls")
                 {
                     var directory_list = Sys.FileSystem.VFS.VFSManager.GetDirectoryListing(@cddefault);
-
                     foreach (var directoryEntry in directory_list)
                     {
                         Console.WriteLine(directoryEntry.mName);
@@ -494,7 +505,7 @@ namespace fixbuild
                     }
                     else
                     {
-                        Console.WriteLine("Invalid drive.");
+                        Console.WriteLine("The drive name you entered is invalid.");
                     }
                     return;
                 }
@@ -502,7 +513,11 @@ namespace fixbuild
                 {
                     return;
                 }
-                Console.WriteLine("The command '" + cmd + "'  is invalid. Type help for a list of commands.");
+                else
+                {
+                    Console.WriteLine("Invalid cmd. Please try again. Type help for a list of commands.");
+                }
+
 
             }
             catch (Exception e)
