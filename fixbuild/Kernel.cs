@@ -88,6 +88,7 @@ namespace fixbuild
                             shutdown += 1;
                             if (shutdown == 6)
                             {
+                                Console.WriteLine("");
                                 Sys.Power.Shutdown();
                             }
                         }
