@@ -14,7 +14,10 @@ namespace fixbuild.ChaseGraphicsAPI
         public static bool THE;
         private Canvas canvas;
         private Pen pen;
+        private TabHandler tabHandler;
+        private WindowComponent window;
         private MouseState mouseState;
+        public static MouseState prevmouseState;
         private UInt32 px, py;
         private List<Tuple<Sys.Graphics.Point, Color>> savedPixels;
 
@@ -22,15 +25,15 @@ namespace fixbuild.ChaseGraphicsAPI
         {
             
             canvas = FullScreenCanvas.GetFullScreenCanvas();
-            canvas.Clear(Color.Black);
+            canvas.Clear(Color.Gray);
             pen = new Pen(Color.White);
             mouseState = MouseState.None;
             px = 3;
             py = 3;
             savedPixels = new List<Tuple<Sys.Graphics.Point, Color>>();
+            tabHandler = new TabHandler(canvas);
             MouseManager.ScreenHeight = (UInt32)canvas.Mode.Rows;
             MouseManager.ScreenWidth = (UInt32)canvas.Mode.Columns;
-            Button(50, 0, 0, pen);
 
             if (THE == true)
             {
@@ -49,7 +52,7 @@ namespace fixbuild.ChaseGraphicsAPI
                 canvas.DrawRectangle(draw, x, y, i, i);
             }
         }
-
+        
             public void MouseHandler()
         {
 
@@ -63,13 +66,6 @@ namespace fixbuild.ChaseGraphicsAPI
                     new Sys.Graphics.Point((int)MouseManager.X+2, (int)MouseManager.Y+1),
                     new Sys.Graphics.Point((int)MouseManager.X+2, (int)MouseManager.Y+2),
             };
-            if (mouseState == MouseState.Middle && py <= 50 && py <= 50)
-            {
-                pen.Color = Color.Red;
-            } else
-            {
-                pen.Color = Color.White;
-            }
             foreach (Tuple<Sys.Graphics.Point, Color> pixelData in savedPixels)
             {
                 canvas.DrawPoint(new Pen(pixelData.Item2), pixelData.Item1);
@@ -79,9 +75,17 @@ namespace fixbuild.ChaseGraphicsAPI
                 savedPixels.Add(new Tuple<Sys.Graphics.Point, Color>(p, canvas.GetPointColor(p.X, p.Y)));
                 canvas.DrawPoint(pen, p);
             }
-            
+            if (mouseState == MouseState.Left&&prevmouseState==MouseState.Left)
+            {
+                Window.tryProcessTabLBDown((Int32)MouseManager.X, (Int32)MouseManager.Y, canvas);
+                TabHandler.ProcessTabBar((Int32)MouseManager.X, (Int32)MouseManager.Y, canvas);
+            } else if (mouseState == MouseState.None && prevmouseState == MouseState.Left)
+            {
+                Window.tryProcessTabLBUp((Int32)MouseManager.X, (Int32)MouseManager.Y, canvas);
+            }
                         
             pen.Color = Color.White;
+            prevmouseState = mouseState;
         }
         }
     }

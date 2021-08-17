@@ -79,8 +79,8 @@ namespace fixbuild
                         string password = Console.ReadLine();
                         if (user == UsernameReal && password == pass)
                         {
-                            login = true;
-                            Console.WriteLine("Welcome" + user);
+                            login = true; 
+                            Console.WriteLine("Welcome " + user);
                         }
                         else
                         {
@@ -443,8 +443,7 @@ namespace fixbuild
                     Console.WriteLine("Example of auto-generated name: " + prefile + "-copy");
                     Console.WriteLine("Type 'custom' or 'auto'");
                     string name = Console.ReadLine();
-                    if (name == "custom")
-                    {
+
                         Console.WriteLine("filename of the new file");
                         string filename = Console.ReadLine();
                         Sys.FileSystem.VFS.VFSManager.CreateFile(@cddefault + filename);
@@ -452,17 +451,7 @@ namespace fixbuild
                         var filestream = filenew.GetFileStream();
                         byte[] data1 = Encoding.ASCII.GetBytes(content);
                         filestream.Write(data, 0, (int)content.Length);
-                    }
-                    if (name == "auto")
-                    {
-                        string auto = "-copy";
-                        string filename = prefile + auto;
-                        Sys.FileSystem.VFS.VFSManager.CreateFile(@cddefault + filename);
-                        var filenew = Sys.FileSystem.VFS.VFSManager.GetFile(@cddefault + filename);
-                        var filestream = filenew.GetFileStream();
-                        byte[] data1 = Encoding.ASCII.GetBytes(content);
-                        filestream.Write(data, 0, (int)content.Length);
-                    }
+
                     Console.WriteLine("file copied succesfully");
                     return;
                 }
