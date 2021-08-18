@@ -53,7 +53,7 @@ namespace fixbuild.ChaseGraphicsAPI
         {
             try
             {
-
+                storePixelsbehindTab(canvas);
                 canvas.DrawRectangle(Window.outlinePen, x, y, defaultwindowSize, windowTopPartSize);
                 canvas.DrawRectangle(Window.outlinePen, x + (defaultwindowSize - xBtnSize), y, xBtnSize, xBtnSize);
                 outlinePen.Color = Color.Red;
@@ -73,7 +73,7 @@ namespace fixbuild.ChaseGraphicsAPI
         {
             try
             {
-                storePixelsbehindTab(canvas);
+                restorePixelsbehindtab(canvas);
                 x = newX;
                 y = newY;
                 this.draw(canvas);
@@ -87,9 +87,8 @@ namespace fixbuild.ChaseGraphicsAPI
             try
             {
 
-                storePixelsbehindTab(canvas);
-                Window.windows.Remove(this);
                 restorePixelsbehindtab(canvas);
+                Window.windows.Remove(this);
             }
             catch
             {
@@ -172,6 +171,8 @@ namespace fixbuild.ChaseGraphicsAPI
         {
             try
             {
+                canvas.Clear(Color.Gray);
+                new TabHandler(canvas);
                 foreach (Tuple<Sys.Graphics.Point, Color> pixelData in storePixelsbehindtab)
                 {
                     canvas.DrawPoint(new Pen(pixelData.Item2), pixelData.Item1);

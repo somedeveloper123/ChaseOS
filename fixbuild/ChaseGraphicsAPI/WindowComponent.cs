@@ -29,7 +29,7 @@ namespace fixbuild.ChaseGraphicsAPI
         }
         public virtual void draw (Window sender)
         {
-
+            
         }
     }
 }
