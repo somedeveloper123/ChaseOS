@@ -4,6 +4,8 @@ using System.Text;
 using System.Drawing;
 using Cosmos.System.Graphics;
 using Sys = Cosmos.System;
+using Cosmos.Core;
+
 namespace fixbuild.ChaseGraphicsAPI
 {
     class Window
@@ -141,6 +143,7 @@ namespace fixbuild.ChaseGraphicsAPI
 
             }
         }
+
         public void storePixelsbehindTab(Canvas canvas)
         {
             try
@@ -157,6 +160,8 @@ namespace fixbuild.ChaseGraphicsAPI
                         fixedX = x;
                         fixedY = y;
                         storePixelsbehindtab.Add(new Tuple<Sys.Graphics.Point, Color>(new Sys.Graphics.Point(fixedX, fixedY), canvas.GetPointColor(fixedX, fixedY)));
+                       
+                        
                         ++x;
                     }
                     ++y;

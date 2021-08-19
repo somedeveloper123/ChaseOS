@@ -163,7 +163,10 @@ namespace fixbuild
                     }
                     return;
                 }
-
+                if (cmd == "art")
+                {
+                    return;
+                }
                 if (cmd == "checkram")
                 {
                     Console.WriteLine(CPU.GetAmountOfRAM()+" MB");
@@ -200,12 +203,14 @@ namespace fixbuild
                     Console.WriteLine(@"Drive? Example: 0:\");
                     string driveId = Console.ReadLine();
                     FileManager.Format(driveId, "FAT32", true);
+                    return;
                 }
                 if (cmd == "format")
                 {
                     Console.WriteLine(@"Drive? Example: 0:\");
                     string driveId = Console.ReadLine();
                     FileManager.Format(driveId, "FAT32", false);
+                    return;
                 }
                 if (cmd == "restart")
                 {
@@ -384,12 +389,12 @@ namespace fixbuild
                         case "sqr":
                             Console.WriteLine("What number to find the square root of?");
                             num1 = Convert.ToInt32(Console.ReadLine());
-                            Console.WriteLine($"Your result: " + Math.Sqrt(num1));
+                            double hi = Math.Sqrt(num1);
+                            Console.WriteLine($"Your result: " + hi);
                             break;
                     }
                     // Wait for the user to respond before closing.
-                    Console.Write("Press any key to close the Calculator console app...");
-                    Console.ReadKey();
+
                     return;
                 }
                 if (cmd == "removedirectory")
@@ -439,10 +444,8 @@ namespace fixbuild
                     byte[] data = new byte[file.Length];
                     file.Read(data, 0, (int)file.Length);
                     string content = Encoding.Default.GetString(data);
-                    Console.WriteLine("Would you like to make custom name for the copied file or use an auto-generated name?\n");
-                    Console.WriteLine("Example of auto-generated name: " + prefile + "-copy");
-                    Console.WriteLine("Type 'custom' or 'auto'");
-                    string name = Console.ReadLine();
+
+
 
                         Console.WriteLine("filename of the new file");
                         string filename = Console.ReadLine();
