@@ -261,6 +261,12 @@ namespace fixbuild
                     Console.WriteLine(DateTime.Now.ToString());
                     return;
                 }
+                if (cmd == "echo")
+                {
+                    Console.WriteLine("Text?");
+                    string text = Console.ReadLine();
+                    Console.WriteLine(text);
+                }
                 if (cmd == "settings")
                 {
                     Console.WriteLine("What color for text color?");
