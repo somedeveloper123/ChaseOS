@@ -163,7 +163,7 @@ namespace fixbuild
                     }
                     return;
                 }
-                if (cmd == "art")
+                if (cmd == "reese")
                 {
                     return;
                 }
