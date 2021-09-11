@@ -360,8 +360,7 @@ namespace fixbuild
                                             break;
                                         case "sqr":
                                             Console.WriteLine("What number to find the square root of?");
-                                            num1 = Convert.ToInt32(Console.ReadLine());
-                                            double hi = Math.Sqrt(num1);
+                                            double hi = Math.Sqrt(Convert.ToDouble(Console.ReadLine()));
                                             Console.WriteLine($"Your result: " + hi);
                                             break;
                                     }
