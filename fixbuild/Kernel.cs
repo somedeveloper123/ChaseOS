@@ -15,11 +15,13 @@ namespace fixbuild
 
     public class Kernel : Sys.Kernel
     {
+        private const string V = "DHSHGKJDHHDKJBKHBHSBVHDH";
         private static Graphics gui;
         public string cddefault;
         public bool login;
         public bool driveCon;
         CosmosVFS FileManager = new Sys.FileSystem.CosmosVFS();
+        CosmosVFS Backup = new Sys.FileSystem.CosmosVFS();
         protected override void BeforeRun()
         {
             try
@@ -435,7 +437,11 @@ namespace fixbuild
             }
             catch (Exception e)
             {
-                Console.WriteLine("The error '" + e.ToString() + "' occured on startup, attempting to contine with boot");
+                Console.WriteLine("The error '" + e.ToString() + "' occured on startup, attempting to contine with os, some features will be broken due to this.");
+                Console.ReadLine();
+                // Filemanager might be corrupted, set it to null.
+                FileManager = Backup;
+                Run();
             }
 
         }

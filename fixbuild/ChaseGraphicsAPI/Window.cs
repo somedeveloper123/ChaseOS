@@ -42,10 +42,10 @@ namespace fixbuild.ChaseGraphicsAPI
                 this.beingDragged = false;
                 this.x = _x;
                 this.y = _y;
-                this.draw(canvas);
+
                 storePixelsbehindtab = new List<Tuple<Sys.Graphics.Point, Color>>();
                 Window.windows.Add(this);
-                
+                this.draw(canvas);
             } catch
             {
 
@@ -55,7 +55,7 @@ namespace fixbuild.ChaseGraphicsAPI
         {
             try
             {
-                storePixelsbehindTab(canvas);
+
                 canvas.DrawRectangle(Window.outlinePen, x, y, defaultwindowSize, windowTopPartSize);
                 canvas.DrawRectangle(Window.outlinePen, x + (defaultwindowSize - xBtnSize), y, xBtnSize, xBtnSize);
                 outlinePen.Color = Color.Red;
@@ -66,6 +66,7 @@ namespace fixbuild.ChaseGraphicsAPI
                 {
                     tc.draw(this);
                 }
+                storePixelsbehindTab(canvas);
             } catch
             {
 
@@ -91,6 +92,7 @@ namespace fixbuild.ChaseGraphicsAPI
 
                 restorePixelsbehindtab(canvas);
                 Window.windows.Remove(this);
+                this.draw(canvas);
             }
             catch
             {
