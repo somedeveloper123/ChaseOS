@@ -368,6 +368,7 @@ namespace fixbuild
                                     // Wait for the user to respond before closing.
 
                                     goto A;
+                                    // bruh
                                 }
                                 if (cmd == "removedirectory")
                                 {
